@@ -1,4 +1,4 @@
-package org.parser;
+package org.parser.json.model;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,5 +37,17 @@ public class JsonObject {
 
     public JsonArray getArray(String key) {
         return arrays.get(key);
+    }
+
+    public Map<String, String> getValues() {
+        return values;
+    }
+
+    public Map<String, JsonArray> getArrays() {
+        return arrays;
+    }
+
+    public Map<String, JsonObject> getObjects() {
+        return objects;
     }
 }

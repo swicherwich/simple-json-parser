@@ -1,4 +1,4 @@
-package org.parser;
+package org.parser.json.model;
 
 import java.util.ArrayList;
 import java.util.List;

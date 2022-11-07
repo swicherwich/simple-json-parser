@@ -1,6 +1,6 @@
-package org.parser;
+package org.parser.json.model;
 
-public enum JsonLiteral {
+public enum JsonGrammar {
     CURL_LEFT("{"),
     CURL_RIGHT("}"),
     SQUARE_LEFT("["),
@@ -11,12 +11,12 @@ public enum JsonLiteral {
 
     private String literal;
 
-    JsonLiteral(String literal) {
+    JsonGrammar(String literal) {
         this.literal = literal;
     }
 
-    public static JsonLiteral valueOf(char c) {
-        for (JsonLiteral l : JsonLiteral.values()) {
+    public static JsonGrammar valueOf(char c) {
+        for (JsonGrammar l : JsonGrammar.values()) {
             if (l.literal().equals(String.valueOf(c))) {
                 return l;
             }

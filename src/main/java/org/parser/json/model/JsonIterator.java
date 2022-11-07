@@ -1,4 +1,4 @@
-package org.parser;
+package org.parser.json.model;
 
 public class JsonIterator {
 

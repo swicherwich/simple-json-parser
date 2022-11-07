@@ -1,19 +1,15 @@
-package org.parser;
+package org.parser.json.parser;
 
-import static org.parser.JsonLiteral.CURL_LEFT;
-import static org.parser.JsonLiteral.CURL_RIGHT;
-import static org.parser.JsonLiteral.QUOTE;
-import static org.parser.JsonLiteral.SEMI_COLUMN;
-import static org.parser.JsonLiteral.SQUARE_LEFT;
-import static org.parser.JsonLiteral.SQUARE_RIGHT;
+import org.parser.json.model.JsonArray;
+import org.parser.json.model.JsonIterator;
+import org.parser.json.model.JsonGrammar;
+import org.parser.json.model.JsonObject;
 
 public class JsonParser {
 
-    private JsonObject root;
     private JsonIterator iterator;
 
     public JsonParser(String json) {
-        this.root = new JsonObject();
         this.iterator = new JsonIterator(json);
     }
 
@@ -22,22 +18,24 @@ public class JsonParser {
             throw new RuntimeException();
         }
 
+        JsonObject root = new JsonObject();
+
         String key = null;
         while (iterator.hasNext()) {
-            JsonLiteral literal = JsonLiteral.valueOf(iterator.next());
+            JsonGrammar literal = JsonGrammar.valueOf(iterator.next());
 
-            if (literal == QUOTE) {
+            if (literal == JsonGrammar.QUOTE) {
                 key = parseString();
-            } else if (literal == SEMI_COLUMN) {
+            } else if (literal == JsonGrammar.SEMI_COLUMN) {
                 char c = iterator.next();
-                if (JsonLiteral.valueOf(c) == QUOTE) {
+                if (JsonGrammar.valueOf(c) == JsonGrammar.QUOTE) {
                     root.addValue(key, parseString());
-                } else if (JsonLiteral.valueOf(c) == SQUARE_LEFT) {
+                } else if (JsonGrammar.valueOf(c) == JsonGrammar.SQUARE_LEFT) {
                     root.addArray(key, parseArray());
-                } else if (JsonLiteral.valueOf(c) == CURL_LEFT) {
+                } else if (JsonGrammar.valueOf(c) == JsonGrammar.CURL_LEFT) {
                     root.addObject(key, parseObject());
                 }
-            } else if (literal == CURL_RIGHT) {
+            } else if (literal == JsonGrammar.CURL_RIGHT) {
                 break;
             }
         }
@@ -50,9 +48,9 @@ public class JsonParser {
 
         while (iterator.hasNext()) {
             char c = iterator.next();
-            JsonLiteral literal = JsonLiteral.valueOf(c);
+            JsonGrammar literal = JsonGrammar.valueOf(c);
 
-            if (literal == QUOTE) {
+            if (literal == JsonGrammar.QUOTE) {
                 break;
             }
             builder.append(c);
@@ -71,11 +69,11 @@ public class JsonParser {
         while (iterator.hasNext()) {
             char c = iterator.next();
 
-            if (JsonLiteral.valueOf(c) == QUOTE) {
+            if (JsonGrammar.valueOf(c) == JsonGrammar.QUOTE) {
                 jsonArray.append(parseString());
-            } else if (JsonLiteral.valueOf(c) == CURL_LEFT) {
+            } else if (JsonGrammar.valueOf(c) == JsonGrammar.CURL_LEFT) {
                 jsonArray.append(parseObject());
-            } else if (JsonLiteral.valueOf(c) == SQUARE_RIGHT) {
+            } else if (JsonGrammar.valueOf(c) == JsonGrammar.SQUARE_RIGHT) {
                 break;
             } else {
                 throw new RuntimeException("Unknown array element type: " + c);
