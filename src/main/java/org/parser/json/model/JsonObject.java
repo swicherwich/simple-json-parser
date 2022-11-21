@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class JsonObject {
 
-    private Map<String, String> values;
+    private Map<String, JsonValue> values;
     private Map<String, JsonObject> objects;
     private Map<String, JsonArray> arrays;
 
@@ -15,7 +15,7 @@ public class JsonObject {
         this.arrays = new HashMap<>();
     }
 
-    public void addValue(String key, String value) {
+    public void addValue(String key, JsonValue value) {
         values.put(key, value);
     }
 
@@ -27,7 +27,7 @@ public class JsonObject {
         arrays.put(key, array);
     }
 
-    public String getValue(String key) {
+    public JsonValue getValue(String key) {
         return values.get(key);
     }
 
@@ -39,7 +39,7 @@ public class JsonObject {
         return arrays.get(key);
     }
 
-    public Map<String, String> getValues() {
+    public Map<String, JsonValue> getValues() {
         return values;
     }
 
